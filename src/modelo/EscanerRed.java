@@ -3,20 +3,26 @@ package modelo;
 import java.util.ArrayList;
 import java.util.List;
 
+// Logica principal del escaneo por rangos de IP
 public class EscanerRed {
 
     private ComandoService comandoService;
-
-    // Interfaz para notificar avances a la vista a través del controlador
-    public interface ProgresoCallback {
-        void onProgresoActualizado(int porcentaje, Dispositivo dispositivoEscaneado);
-    }
 
     public EscanerRed() {
         this.comandoService = new ComandoService();
     }
 
-    public List<Dispositivo> escanearRangoConProgreso(String ipInicio, String ipFin, ProgresoCallback callback) {
+    // Revisa que la IP tenga el formato correcto x.x.x.x
+    public boolean esIpValida(String ip) {
+        if (ip == null || ip.trim().isEmpty()) {
+            return false;
+        }
+        String regex = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+        return ip.matches(regex);
+    }
+
+    // Recorre las IPs desde la de inicio hasta la de fin
+    public List<Dispositivo> escanearRango(String ipInicio, String ipFin, int timeoutMs) {
         List<Dispositivo> resultados = new ArrayList<>();
 
         try {
@@ -27,25 +33,18 @@ public class EscanerRed {
             int hostInicio = Integer.parseInt(partesInicio[3]);
             int hostFin = Integer.parseInt(partesFin[3]);
 
-            int totalIPs = (hostFin - hostInicio) + 1;
-            int procesadas = 0;
+            if (hostFin < hostInicio) {
+                return resultados;
+            }
 
             for (int i = hostInicio; i <= hostFin; i++) {
                 String ipActual = prefijoRed + i;
-                Dispositivo dispositivo = comandoService.escanearIP(ipActual);
+                Dispositivo dispositivo = comandoService.escanearIP(ipActual, timeoutMs);
                 resultados.add(dispositivo);
-
-                procesadas++;
-                int porcentaje = (int) (((double) procesadas / totalIPs) * 100);
-
-                // Notificamos el avance
-                if (callback != null) {
-                    callback.onProgresoActualizado(porcentaje, dispositivo);
-                }
             }
 
         } catch (Exception e) {
-            System.out.println("Error al procesar las direcciones IP.");
+            System.out.println("Error al procesar el rango de IPs.");
         }
 
         return resultados;

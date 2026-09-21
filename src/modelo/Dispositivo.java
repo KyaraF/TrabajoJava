@@ -1,5 +1,6 @@
 package modelo;
 
+// Clase para guardar los datos de cada equipo encontrado
 public class Dispositivo {
 
     private String ip;
@@ -49,6 +50,7 @@ public class Dispositivo {
         this.tiempoRespuesta = tiempoRespuesta;
     }
 
+    // Pasa la informacion a texto para guardarla en el archivo
     @Override
     public String toString() {
         String estado = conectado ? "CONECTADO" : "NO CONECTADO";

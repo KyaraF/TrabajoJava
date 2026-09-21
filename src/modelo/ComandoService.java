@@ -3,17 +3,20 @@ package modelo;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+// Clase para comunicarme con la consola de comandos de Windows (CMD)
 public class ComandoService {
 
-    public Dispositivo escanearIP(String ip) {
+    // Ejecuta el comando ping en la consola
+    public Dispositivo escanearIP(String ip, int timeoutMs) {
         Dispositivo disp = new Dispositivo();
         disp.setIp(ip);
 
         try {
-            // Ejecutamos el comando ping enviando 1 solo paquete (-n 1)
-            ProcessBuilder pb = new ProcessBuilder("ping", "-n", "1", ip);
+            // Ejecuto 'ping -n 1 -w timeout ip'
+            ProcessBuilder pb = new ProcessBuilder("ping", "-n", "1", "-w", String.valueOf(timeoutMs), ip);
             Process proceso = pb.start();
 
+            // Leo lo que me responde la consola
             BufferedReader reader = new BufferedReader(new InputStreamReader(proceso.getInputStream()));
             String linea;
             boolean responde = false;
@@ -21,11 +24,9 @@ public class ComandoService {
 
             while ((linea = reader.readLine()) != null) {
                 String lineaLower = linea.toLowerCase();
-                // Verificamos si hubo respuesta del equipo
+                // Si la respuesta dice esto, el equipo esta activo
                 if (lineaLower.contains("respuesta desde") || lineaLower.contains("reply from")) {
                     responde = true;
-                    
-                    // Buscamos extraer el tiempo si aparece en la línea
                     if (lineaLower.contains("tiempo=") || lineaLower.contains("time=")) {
                         tiempo = linea;
                     } else {
@@ -55,6 +56,7 @@ public class ComandoService {
         return disp;
     }
 
+    // Usa nslookup en CMD para buscar el nombre del equipo
     private String obtenerNombreDNS(String ip) {
         try {
             ProcessBuilder pb = new ProcessBuilder("nslookup", ip);
