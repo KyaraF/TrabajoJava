@@ -11,6 +11,7 @@
    * Entrá a la sección de publicaciones (*Releases*) en GitHub o descargá el archivo `EscanerRed.jar` directamente desde el repositorio.
 2. **Guardar el archivo:**
    * Ubicá el archivo `EscanerRed.jar` en la carpeta que prefieras (por ejemplo, en el Escritorio).
+   * Si lo descargaste y se descargo como winrar, toca clic derecho, pone abrir con y eleji la version de java que se necesita
 3. **Ejecutar el programa:**
    * **Opción A (Directa):** Hacé doble clic sobre el archivo `EscanerRed.jar`.
    * **Opción B (Desde la consola):** Abrí la consola de comandos (`cmd`), andá hasta la carpeta del archivo y escribí:
