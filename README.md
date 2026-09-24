@@ -5,15 +5,16 @@
 * **Entorno de Ejecución:** Java Development Kit (JDK) o Java Runtime Environment (JRE) 17 o superior.
 * **Entorno de Desarrollo (Opcional):** Eclipse IDE.
 
-## 2. Instalación e Importación en Eclipse
-1. Clonar o descargar el repositorio del proyecto desde GitHub.
-2. Abrir **Eclipse IDE** y seleccionar un espacio de trabajo (*workspace*).
-3. Ir al menú superior: **File > Import...**
-4. Seleccionar **General > Existing Projects into Workspace** y hacer clic en **Next**.
-5. Marcar la opción **Select root directory** y presionar **Browse...** para seleccionar la carpeta donde se descargó el proyecto desde GitHub.
-6. Asegurarse de que el proyecto esté seleccionado en la lista y hacer clic en **Finish**.
-7. Para ejecutar la aplicación, abrir la clase `Main.java` (ubicada en el paquete `principal`) dentro de Eclipse y presionar el botón **Run** (`Ctrl + F11`).
-
+## 2. Descarga e Instalación
+1. Ir a la sección de descargas del proyecto en GitHub (o descargar el archivo `EscanerRed.jar` adjunto).
+2. Guardar el archivo `EscanerRed.jar` en cualquier carpeta de su preferencia (por ejemplo, el Escritorio).
+3. **Para ejecutar la aplicación:**
+   * **Opción 1:** Hacer doble clic sobre el archivo `EscanerRed.jar`.
+   * **Opción 2 (Consola):** Abrir la consola de comandos (`cmd`), navegar hasta la carpeta donde se guardó el archivo y ejecutar:
+     ```bash
+     java -jar EscanerRed.jar
+     ```
+   
 ## 3. Guía de Uso Paso a Paso
 
 ### Ingresar Rango de IPs
