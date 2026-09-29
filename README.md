@@ -8,17 +8,11 @@
 ## 2. Descarga e Instalación (Capturas instructivas en la documentacion)
 
 1. **Descargar el ejecutable:**
-   * Entrá a la sección de publicaciones (*Releases*) en GitHub o descargá el archivo `EscanerRed.jar` directamente desde el repositorio.
-2. **Guardar el archivo:**
-   * Ubicá el archivo `EscanerRed.jar` en la carpeta que prefieras (por ejemplo, en el Escritorio).
-   * Si lo descargaste y se descargo como winrar, toca clic derecho, pone abrir con y eleji la version de java que se necesita
-3. **Ejecutar el programa:**
-   * **Opción A (Directa):** Hacé doble clic sobre el archivo `EscanerRed.jar`.
-   * **Opción B (Desde la consola):** Abrí la consola de comandos (`cmd`), andá hasta la carpeta del archivo y escribí:
-     ```bash
-     java -jar EscanerRed.jar
-     ```
+   * Abrí el repositorio de GitHub y busca la sección (A la derecha de la página) Releases y clickea en el texto EscanerRed.Jar
+   * Te va a aparecer un espacio con el título EscanerRed.Jar en grande, de las 3 opciones debajo de ese título, elegí la que dice “EscanerRed.Jar”, eso va a descargar un archivo .Jar
      
+2. **Guardar el archivo:** Ubicá el archivo EscanerRed.jar en la carpeta que prefieras (por ejemplo, en el Escritorio). Si no se abrió automaticamente con la versión de Java que descargaste (Por ejemplo, si está abierto con Winrar o algo así) toca click derecho y busca la opción “Abrir con”, después elegí la opción que dice “OpenJDK Plataform Binary” y hace doble click en el archivo.
+          
 ## 3. Guía de Uso Paso a Paso
 
 ### Ingresar el Rango de IPs y Ajustar el Tiempo de Espera:
