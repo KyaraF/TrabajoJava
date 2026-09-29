@@ -21,11 +21,9 @@
      
 ## 3. Guía de Uso Paso a Paso
 
-### Ingresar el Rango de IPs
+### Ingresar el Rango de IPs y Ajustar el Tiempo de Espera:
 * En **IP Inicio**, ingresá la primera IP a revisar (Ejemplo: `192.168.1.1`).
 * En **IP Fin**, ingresá la última IP del rango (Ejemplo: `192.168.1.5`).
-
-### Ajustar el Tiempo de Espera
 * En **Timeout (ms)** podés cambiar el tiempo máximo de espera por equipo (el valor predeterminado es `1000` ms).
 
 ### Realizar el Escaneo
