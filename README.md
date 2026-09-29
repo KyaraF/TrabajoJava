@@ -5,7 +5,7 @@
 * **Sistema Operativo:** Windows 7 / 10 / 11.
 * **Java:** Tener instalado Java (JRE o JDK 17 o superior) en la computadora.
 
-## 2. Descarga e Instalación
+## 2. Descarga e Instalación (Capturas instructivas en la documentacion)
 
 1. **Descargar el ejecutable:**
    * Entrá a la sección de publicaciones (*Releases*) en GitHub o descargá el archivo `EscanerRed.jar` directamente desde el repositorio.
