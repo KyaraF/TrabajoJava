@@ -6,6 +6,7 @@
 * **Java:** Tener instalado Java (JRE o JDK 17 o superior) en la computadora.
 
 ## 2. Descarga e Instalación (Capturas instructivas en la documentacion)
+Asegúrate de tener el Java descargado (Si entras a la página principal de Adoptium y  descargas la primera opción debería ser suficiente).
 
 1. **Descargar el ejecutable:**
    * Abrí el repositorio de GitHub y busca la sección (A la derecha de la página) Releases y clickea en el texto EscanerRed.Jar
