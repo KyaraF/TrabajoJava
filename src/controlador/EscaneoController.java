@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 import modelo.Dispositivo;
 import modelo.EscanerRed;
@@ -57,31 +58,77 @@ public class EscaneoController {
 
         vista.limpiarResultados();
         vista.habilitarBotonEscanear(false);
+        ultimosResultados.clear();
 
-        // Hilo secundario para que la pantalla no se congele durante el escaneo
-        new Thread(() -> {
-            vista.setProgreso(10);
-            ultimosResultados = escaner.escanearRango(ipInicio, ipFin, timeoutMs);
-            vista.setProgreso(100);
+        // SwingWorker para realizar el escaneo en segundo plano y actualizar la vista uno a uno
+        SwingWorker<Void, Dispositivo> worker = new SwingWorker<Void, Dispositivo>() {
+            private int activos = 0;
+            private int totalIps = 0;
 
-            if (ultimosResultados.isEmpty()) {
-                JOptionPane.showMessageDialog(vista, "La IP final debe ser mayor a la IP inicial.", "Error", JOptionPane.WARNING_MESSAGE);
+            @Override
+            protected Void doInBackground() throws Exception {
+                String[] partesInicio = ipInicio.split("\\.");
+                String[] partesFin = ipFin.split("\\.");
+
+                String prefijoRed = partesInicio[0] + "." + partesInicio[1] + "." + partesInicio[2] + ".";
+                int hostInicio = Integer.parseInt(partesInicio[3]);
+                int hostFin = Integer.parseInt(partesFin[3]);
+
+                if (hostFin < hostInicio) {
+                    return null;
+                }
+
+                totalIps = (hostFin - hostInicio) + 1;
+                int procesados = 0;
+
+                for (int i = hostInicio; i <= hostFin; i++) {
+                    String ipActual = prefijoRed + i;
+                    
+                    // Escanear IP individual a traves del servicio de comandos
+                    Dispositivo disp = escaner.getComandoService().escanearIP(ipActual, timeoutMs);
+                    
+                    procesados++;
+                    ultimosResultados.add(disp);
+                    
+                    if (disp.isConectado()) {
+                        activos++;
+                    }
+
+                    // Notificar avance a la GUI
+                    int porcentaje = (int) (((double) procesados / totalIps) * 100);
+                    setProgress(porcentaje);
+                    
+                    // Publicar dispositivo individual para que la vista lo agregue a la tabla
+                    publish(disp);
+                }
+
+                return null;
             }
 
-            int activos = 0;
-            for (Dispositivo d : ultimosResultados) {
-                if (d.isConectado()) activos++;
+            @Override
+            protected void process(List<Dispositivo> chunks) {
+                // Se ejecuta en el EDT (hilo de interfaz)
+                for (Dispositivo disp : chunks) {
+                    vista.agregarDispositivoTabla(disp);
+                }
+                vista.setProgreso(getProgress());
+                vista.actualizarResumen(activos, ultimosResultados.size());
             }
 
-            // Actualizo los componentes en pantalla
-            vista.actualizarResumen(activos, ultimosResultados.size());
-            vista.mostrarEnTabla(ultimosResultados);
-            vista.habilitarBotonEscanear(true);
+            @Override
+            protected void done() {
+                // Finalizacion del escaneo
+                vista.habilitarBotonEscanear(true);
 
-            if (!ultimosResultados.isEmpty()) {
-                vista.habilitarBotonGuardar(true);
+                if (ultimosResultados.isEmpty()) {
+                    JOptionPane.showMessageDialog(vista, "La IP final debe ser mayor a la IP inicial.", "Error", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    vista.habilitarBotonGuardar(true);
+                }
             }
-        }).start();
+        };
+
+        worker.execute();
     }
 
     private void guardarResultadosEnArchivo() {

@@ -12,6 +12,10 @@ public class EscanerRed {
         this.comandoService = new ComandoService();
     }
 
+    public ComandoService getComandoService() {
+        return comandoService;
+    }
+
     // Revisa que la IP tenga el formato correcto x.x.x.x
     public boolean esIpValida(String ip) {
         if (ip == null || ip.trim().isEmpty()) {

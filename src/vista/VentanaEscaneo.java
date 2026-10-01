@@ -114,7 +114,17 @@ public class VentanaEscaneo extends JFrame {
             modeloTabla.addRow(fila);
         }
     }
-
+    
+    public void agregarDispositivoTabla(Dispositivo disp) {
+        String filtro = getFiltroSeleccionado();
+        if ("Solo Conectados".equals(filtro) && !disp.isConectado()) {
+            return;
+        }
+        String estado = disp.isConectado() ? "CONECTADO" : "NO CONECTADO";
+        Object[] fila = {disp.getIp(), disp.getNombre(), estado, disp.getTiempoRespuesta()};
+        modeloTabla.addRow(fila);
+    }
+    
     public void limpiarResultados() {
         modeloTabla.setRowCount(0);
         progressBar.setValue(0);
