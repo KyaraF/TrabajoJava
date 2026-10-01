@@ -63,26 +63,22 @@ public class EscaneoController {
         // SwingWorker para realizar el escaneo en segundo plano y actualizar la vista uno a uno
         SwingWorker<Void, Dispositivo> worker = new SwingWorker<Void, Dispositivo>() {
             private int activos = 0;
-            private int totalIps = 0;
+            private long totalIps = 0;
 
             @Override
             protected Void doInBackground() throws Exception {
-                String[] partesInicio = ipInicio.split("\\.");
-                String[] partesFin = ipFin.split("\\.");
+                long inicioNum = EscanerRed.ipATotalNum(ipInicio);
+                long finNum = EscanerRed.ipATotalNum(ipFin);
 
-                String prefijoRed = partesInicio[0] + "." + partesInicio[1] + "." + partesInicio[2] + ".";
-                int hostInicio = Integer.parseInt(partesInicio[3]);
-                int hostFin = Integer.parseInt(partesFin[3]);
-
-                if (hostFin < hostInicio) {
+                if (finNum < inicioNum) {
                     return null;
                 }
 
-                totalIps = (hostFin - hostInicio) + 1;
-                int procesados = 0;
+                totalIps = (finNum - inicioNum) + 1;
+                long procesados = 0;
 
-                for (int i = hostInicio; i <= hostFin; i++) {
-                    String ipActual = prefijoRed + i;
+                for (long i = inicioNum; i <= finNum; i++) {
+                    String ipActual = EscanerRed.totalNumAIp(i);
                     
                     // Escanear IP individual a traves del servicio de comandos
                     Dispositivo disp = escaner.getComandoService().escanearIP(ipActual, timeoutMs);

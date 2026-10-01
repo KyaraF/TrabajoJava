@@ -25,24 +25,38 @@ public class EscanerRed {
         return ip.matches(regex);
     }
 
+    // Convierte una cadena IP "10.120.0.63" a un entero numérico continuo
+    public static long ipATotalNum(String ip) {
+        String[] partes = ip.split("\\.");
+        long resultado = 0;
+        for (int i = 0; i < 4; i++) {
+            resultado = (resultado << 8) + Integer.parseInt(partes[i]);
+        }
+        return resultado;
+    }
+
+    // Convierte un entero numérico de vuelta a cadena IP "10.120.0.63"
+    public static String totalNumAIp(long num) {
+        return ((num >> 24) & 0xFF) + "." +
+               ((num >> 16) & 0xFF) + "." +
+               ((num >> 8) & 0xFF) + "." +
+               (num & 0xFF);
+    }
+
     // Recorre las IPs desde la de inicio hasta la de fin
     public List<Dispositivo> escanearRango(String ipInicio, String ipFin, int timeoutMs) {
         List<Dispositivo> resultados = new ArrayList<>();
 
         try {
-            String[] partesInicio = ipInicio.split("\\.");
-            String[] partesFin = ipFin.split("\\.");
+            long inicio = ipATotalNum(ipInicio);
+            long fin = ipATotalNum(ipFin);
 
-            String prefijoRed = partesInicio[0] + "." + partesInicio[1] + "." + partesInicio[2] + ".";
-            int hostInicio = Integer.parseInt(partesInicio[3]);
-            int hostFin = Integer.parseInt(partesFin[3]);
-
-            if (hostFin < hostInicio) {
+            if (fin < inicio) {
                 return resultados;
             }
 
-            for (int i = hostInicio; i <= hostFin; i++) {
-                String ipActual = prefijoRed + i;
+            for (long i = inicio; i <= fin; i++) {
+                String ipActual = totalNumAIp(i);
                 Dispositivo dispositivo = comandoService.escanearIP(ipActual, timeoutMs);
                 resultados.add(dispositivo);
             }
